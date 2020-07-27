@@ -1,7 +1,7 @@
 # Личный проект «Большое путешествие» [![Build status][travis-image]][travis-url]
 
 * Студент: [Елена Есина](https://up.htmlacademy.ru/ecmascript/12/user/261907).
-* Наставник: `Неизвестно`.
+* Наставник: [Ксения Толстых](https://up.htmlacademy.ru/ecmascript/12/user/618277).
 
 ---
 
