@@ -10,27 +10,27 @@ const render = (container, position, template) => {
 	container.insertAdjacentHTML(position, template);
 };
 
-const createInfoTemplate = () => `<section class="trip-main__trip-info  trip-info"></section>`;
+const getInfoTemplate = () => `<section class="trip-main__trip-info  trip-info"></section>`;
 
-const createRouteTemplate = () =>
+const getRouteTemplate = () =>
   `<div class="trip-info__main">
     <h1 class="trip-info__title">Amsterdam &mdash; Chamonix &mdash; Geneva</h1>
     <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;20</p>
   </div>`;
 
-const createCostTemplate = () =>
+const getCostTemplate = () =>
   `<p class="trip-info__cost">
     Total: &euro;&nbsp;<span class="trip-info__cost-value">1230</span>
   </p>`;
 
-const createMenuTemplate = () =>
+const getMenuTemplate = () =>
   `<h2 class="visually-hidden">Switch trip view</h2>
   <nav class="trip-controls__trip-tabs  trip-tabs">
     <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
     <a class="trip-tabs__btn" href="#">Stats</a>
   </nav>`;
 
-const createFiltersTemplate = () =>
+const getFiltersTemplate = () =>
   `<h2 class="visually-hidden">Filter events</h2>
   <form class="trip-filters" action="#" method="get">
     <div class="trip-filters__filter">
@@ -48,7 +48,7 @@ const createFiltersTemplate = () =>
     <button class="visually-hidden" type="submit">Accept filter</button>
   </form>`;
 
-const createSortingTemplate = () =>
+const getSortingTemplate = () =>
   `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
     <span class="trip-sort__item  trip-sort__item--day">Day</span>
     <div class="trip-sort__item  trip-sort__item--event">
@@ -76,9 +76,9 @@ const createSortingTemplate = () =>
     <span class="trip-sort__item  trip-sort__item--offers">Offers</span>
   </form>`;
 
-const createListTemplate = () => `<ul class="trip-days"></ul>`;
+const getListTemplate = () => `<ul class="trip-days"></ul>`;
 
-const createDayTemplate = () =>
+const getDayTemplate = () =>
   `<li class="trip-days__item  day">
     <div class="day__info">
       <span class="day__counter">1</span>
@@ -87,7 +87,7 @@ const createDayTemplate = () =>
     <ul class="trip-events__list"></ul>
   </li>`;
 
-const createEventTemplate = () =>
+const getEventTemplate = () =>
   `<li class="trip-events__item">
     <div class="event">
       <div class="event__type">
@@ -119,7 +119,7 @@ const createEventTemplate = () =>
     </div>
   </li>`;
 
-const createEditTemplate = () =>
+const getEditTemplate = () =>
   `<form class="trip-events__item  event  event--edit" action="#" method="post">
     <header class="event__header">
       <div class="event__type-wrapper">
@@ -266,24 +266,24 @@ const createEditTemplate = () =>
     </section>
   </form>`;
 
-render(headerElement, `afterbegin`, createInfoTemplate());
+render(headerElement, `afterbegin`, getInfoTemplate());
 
 const infoElement = headerElement.querySelector(`.trip-info`);
 
-render(infoElement, `beforeend`, createRouteTemplate());
-render(infoElement, `beforeend`, createCostTemplate());
-render(controlsElement, `beforeend`, createMenuTemplate());
-render(controlsElement, `beforeend`, createFiltersTemplate());
-render(contentElement, `beforeend`, createSortingTemplate());
-render(contentElement, `beforeend`, createEditTemplate());
-render(contentElement, `beforeend`, createListTemplate());
+render(infoElement, `beforeend`, getRouteTemplate());
+render(infoElement, `beforeend`, getCostTemplate());
+render(controlsElement, `beforeend`, getMenuTemplate());
+render(controlsElement, `beforeend`, getFiltersTemplate());
+render(contentElement, `beforeend`, getSortingTemplate());
+render(contentElement, `beforeend`, getEditTemplate());
+render(contentElement, `beforeend`, getListTemplate());
 
 const listElement = contentElement.querySelector(`.trip-days`);
 
-render(listElement, `beforeend`, createDayTemplate());
+render(listElement, `beforeend`, getDayTemplate());
 
 const dayElement = contentElement.querySelector(`.trip-events__list`);
 
 for (let i = 0; i < EVENTS_COUNT; i++) {
-	render(dayElement, `beforeend`, createEventTemplate());
+	render(dayElement, `beforeend`, getEventTemplate());
 }
