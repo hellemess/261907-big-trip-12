@@ -1,4 +1,4 @@
-import {generateEvent} from './mock/event';
+import {generateTrip} from './mock/event';
 import {getInfoTemplate} from './view/info';
 import {getRouteTemplate} from './view/route';
 import {getCostTemplate} from './view/cost';
@@ -12,7 +12,7 @@ import {getEventTemplate} from './view/event';
 
 const EVENTS_COUNT = 23;
 
-const events = new Array(EVENTS_COUNT).fill().map(generateEvent);
+const trip = generateTrip(EVENTS_COUNT);
 
 const headerElement = document.querySelector('.trip-main');
 const controlsElement = headerElement.querySelector(`.trip-controls`);
@@ -31,7 +31,7 @@ render(infoElement, `beforeend`, getCostTemplate());
 render(controlsElement, `beforeend`, getMenuTemplate());
 render(controlsElement, `beforeend`, getFilterTemplate());
 render(contentElement, `beforeend`, getSortingTemplate());
-render(contentElement, `beforeend`, getEventEditTemplate(events[0]));
+render(contentElement, `beforeend`, getEventEditTemplate(trip[0]));
 render(contentElement, `beforeend`, getListTemplate());
 
 const listElement = contentElement.querySelector(`.trip-days`);
@@ -41,5 +41,5 @@ render(listElement, `beforeend`, getDayTemplate());
 const dayElement = contentElement.querySelector(`.trip-events__list`);
 
 for (let i = 1; i < EVENTS_COUNT; i++) {
-  render(dayElement, `beforeend`, getEventTemplate(events[i]));
+  render(dayElement, `beforeend`, getEventTemplate(trip[i]));
 }

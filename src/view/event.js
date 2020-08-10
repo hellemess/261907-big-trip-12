@@ -1,3 +1,28 @@
+import {addZero, formatEventTime} from '../utils';
+
+const getTimeTemplate = (time) => {
+  const {start, finish} = time;
+
+  const diff = finish - start;
+
+  const duration = {
+    days: Math.floor(diff / 1000 / 60 / 60 / 24),
+    hours: Math.floor(diff / 1000 / 60 / 60 % 24),
+    minutes: Math.floor(diff / 1000 / 60 % 60)
+  };
+
+  return `<p class="event__time">
+    <time class="event__start-time" datetime="${start.toISOString()}">${formatEventTime(start)}</time>
+    &mdash;
+    <time class="event__end-time" datetime="${finish.toISOString()}">${formatEventTime(finish)}</time>
+  </p>
+  <p class="event__duration">
+    ${duration.days > 0 ? `${addZero(duration.days)}D ` : ``}
+    ${duration.hours > 0 ? `${addZero(duration.hours)}H ` : ``}
+    ${duration.minutes > 0 ? `${addZero(duration.minutes)}M` : ``}
+  </p>`;
+};
+
 const getEventOptionTemplate = (option) => {
   const {title, cost} = option;
 
@@ -9,8 +34,9 @@ const getEventOptionTemplate = (option) => {
 };
 
 export const getEventTemplate = (event) => {
-  const {type, prep, destination, cost, options} = event;
+  const {type, prep, destination, cost, options, time} = event;
 
+  const timeTemplate = getTimeTemplate(time);
   const optionsTemplate = options.map((option) => getEventOptionTemplate(option)).join(``);
 
   return `<li class="trip-events__item">
@@ -20,12 +46,7 @@ export const getEventTemplate = (event) => {
       </div>
       <h3 class="event__title">${type} ${prep} ${destination}</h3>
       <div class="event__schedule">
-        <p class="event__time">
-          <time class="event__start-time" datetime="2019-03-18T10:30">10:30</time>
-          &mdash;
-          <time class="event__end-time" datetime="2019-03-18T11:00">11:00</time>
-        </p>
-        <p class="event__duration">30M</p>
+        ${timeTemplate}
       </div>
       <p class="event__price">
         &euro;&nbsp;<span class="event__price-value">${cost}</span>
