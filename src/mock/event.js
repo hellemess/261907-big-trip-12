@@ -84,5 +84,18 @@ export const generateTrip = (eventsCount) => {
     start = finish;
   }
 
-  return events;
+  const trip = {};
+
+  for (let event of events) {
+    if (trip[event.time.start.toDateString()]) {
+      trip[event.time.start.toDateString()].push(event);
+    } else {
+      trip[event.time.start.toDateString()] = [event];
+    }
+  }
+
+  return {
+    days: trip,
+    events
+  };
 };
