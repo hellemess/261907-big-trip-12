@@ -1,5 +1,19 @@
 import {DESTINATIONS, OPTIONS, TYPES_IN, TYPES_TO} from '../const';
-import {formatEventEditTime} from '../utils';
+import {createElement, formatEventEditTime} from '../utils';
+
+const BLANK_EVENT = {
+  type: `Bus`,
+  prep: `to`,
+  destination: ``,
+  cost: ``,
+  isFavorite: false,
+  options: [],
+  info: null,
+  time: {
+    start: new Date(),
+    finish: new Date()
+  }
+};
 
 const getDescriptionTemplate = (info) => {
   if (info === null) {
@@ -47,20 +61,8 @@ const getTypeTemplate = (type, isChecked) =>
     <label class="event__type-label  event__type-label--${type.toLowerCase()}" for="event-type-${type.toLowerCase()}-1">${type}</label>
   </div>`;
 
-export const getEventEditTemplate = (event = {}) => {
-  const {
-    type = `Bus`,
-    prep = `to`,
-    destination = ``,
-    cost = ``,
-    isFavorite = false,
-    options = [],
-    info = null,
-    time = {
-      start: new Date(),
-      finish: new Date()
-    }
-  } = event;
+const getEventEditTemplate = (event) => {
+  const {type, prep, destination, cost, isFavorite, options, info, time} = event;
 
   const {start, finish} = time;
   const transferTypesTemplate = TYPES_TO.map((it) => getTypeTemplate(it, it === type)).join(``);
@@ -122,7 +124,7 @@ export const getEventEditTemplate = (event = {}) => {
           </svg>
       </label>
       <button class="event__rollup-btn" type="button">
-        <span class="visually-hidden">Open event</span>
+        <span class="visually-hidden">Close event</span>
       </button>`
     : ``}
     </header>
@@ -143,3 +145,26 @@ export const getEventEditTemplate = (event = {}) => {
     : ``}
   </form>`;
 };
+
+export default class EventEditView {
+  constructor(event = BLANK_EVENT) {
+    this._element = null;
+    this._event = event;
+  }
+
+  get element() {
+    if (!this._element) {
+      this._element = createElement(this.template);
+    }
+
+    return this._element;
+  }
+
+  get template() {
+    return getEventEditTemplate(this._event);
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

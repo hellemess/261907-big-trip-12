@@ -1,4 +1,6 @@
-export const getRouteTemplate = (events) => {
+import {createElement} from '../utils';
+
+const getRouteTemplate = (events) => {
   const places = [];
 
   for (let event of events) {
@@ -22,3 +24,26 @@ export const getRouteTemplate = (events) => {
     </p>
   </div>`;
 };
+
+export default class RouteView {
+  constructor(events) {
+    this._element = null;
+    this._events = events;
+  }
+
+  get element() {
+    if (!this._element) {
+      this._element = createElement(this.template);
+    }
+
+    return this._element;
+  }
+
+  get template() {
+    return getRouteTemplate(this._events);
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
