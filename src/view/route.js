@@ -3,9 +3,9 @@ import {createElement} from '../utils';
 const getRouteTemplate = (events) => {
   const places = [];
 
-  for (let event of events) {
-    if (event.destination !== places[places.length - 1]) {
-      places.push(event.destination);
+  for (let tripEvent of events) {
+    if (tripEvent.destination !== places[places.length - 1]) {
+      places.push(tripEvent.destination);
     }
   }
 

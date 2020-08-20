@@ -3,10 +3,10 @@ import {createElement} from '../utils';
 const getCostTemplate = (events) => {
   let cost = 0;
 
-  for (let event of events) {
-    cost += event.cost;
+  for (let tripEvent of events) {
+    cost += tripEvent.cost;
 
-    for (let option of event.options) {
+    for (let option of tripEvent.options) {
       cost += option.cost;
     }
   }

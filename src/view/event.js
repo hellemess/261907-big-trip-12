@@ -33,8 +33,8 @@ const getEventOptionTemplate = (option) => {
   </li>`;
 };
 
-const getEventTemplate = (event) => {
-  const {type, prep, destination, cost, options, time} = event;
+const getEventTemplate = (tripEvent) => {
+  const {type, prep, destination, cost, options, time} = tripEvent;
 
   const timeTemplate = getTimeTemplate(time);
   const optionsTemplate = options.map((option) => getEventOptionTemplate(option)).join(``);
@@ -63,9 +63,9 @@ const getEventTemplate = (event) => {
 };
 
 export default class EventView {
-  constructor(event) {
+  constructor(tripEvent) {
     this._element = null;
-    this._event = event;
+    this._event = tripEvent;
   }
 
   get element() {

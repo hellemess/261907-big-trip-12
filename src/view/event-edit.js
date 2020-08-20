@@ -61,14 +61,14 @@ const getTypeTemplate = (type, isChecked) =>
     <label class="event__type-label  event__type-label--${type.toLowerCase()}" for="event-type-${type.toLowerCase()}-1">${type}</label>
   </div>`;
 
-const getEventEditTemplate = (event) => {
-  const {type, prep, destination, cost, isFavorite, options, info, time} = event;
+const getEventEditTemplate = (tripEvent) => {
+  const {type, prep, destination, cost, isFavorite, options, info, time} = tripEvent;
 
   const {start, finish} = time;
   const transferTypesTemplate = TYPES_TO.map((it) => getTypeTemplate(it, it === type)).join(``);
   const activityTypesTemplate = TYPES_IN.map((it) => getTypeTemplate(it, it === type)).join(``);
   const destinationOptionsTemplate = DESTINATIONS.map((it) => getDestionationOptionTemplate(it)).join(``);
-  const isNew = Object.keys(event).length > 0 ? false : true;
+  const isNew = destination === `` ? true : false;
   const availableOptions = OPTIONS.filter((option) => option.forTypes.indexOf(type) >= 0);
   const optionsTemplate = availableOptions.length > 0 ? availableOptions.map((it) => getOptionsItemTemplate(it, options)).join(``) : false;
   const descriptionTemplate = getDescriptionTemplate(info);
@@ -147,9 +147,9 @@ const getEventEditTemplate = (event) => {
 };
 
 export default class EventEditView {
-  constructor(event = BLANK_EVENT) {
+  constructor(tripEvent = BLANK_EVENT) {
     this._element = null;
-    this._event = event;
+    this._event = tripEvent;
   }
 
   get element() {
