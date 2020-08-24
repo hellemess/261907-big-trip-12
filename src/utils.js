@@ -1,4 +1,19 @@
+export const RenderPosition = {
+  BEFOREBEGIN: `beforebegin`,
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`,
+  AFTEREND: `afterend`
+};
+
 export const addZero = (number) => number < 10 ? `0${number}` : number;
+
+export const createElement = (template) => {
+  const element = document.createElement(`div`);
+
+  element.innerHTML = template;
+
+  return element.firstChild;
+};
 
 export const formatEventEditTime = (time) => time.toLocaleString(`en-GB`).replace(`,`, ``).replace(/:\d{2}$/, ``);
 
@@ -18,3 +33,20 @@ export const getRandomInteger = (a = 0, b = 1) => {
 };
 
 export const isFutureEvent = (date) => date > new Date();
+
+export const render = (position, container, element) => {
+  switch (position) {
+    case RenderPosition.BEFOREBEGIN:
+      container.before(element);
+      break;
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+    case RenderPosition.AFTEREND:
+      container.after(element);
+      break;
+  }
+};

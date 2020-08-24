@@ -1,4 +1,4 @@
-import {addZero, formatEventTime} from '../utils';
+import {addZero, createElement, formatEventTime} from '../utils';
 
 const getTimeTemplate = (time) => {
   const {start, finish} = time;
@@ -33,8 +33,8 @@ const getEventOptionTemplate = (option) => {
   </li>`;
 };
 
-export const getEventTemplate = (event) => {
-  const {type, prep, destination, cost, options, time} = event;
+const getEventTemplate = (tripEvent) => {
+  const {type, prep, destination, cost, options, time} = tripEvent;
 
   const timeTemplate = getTimeTemplate(time);
   const optionsTemplate = options.map((option) => getEventOptionTemplate(option)).join(``);
@@ -61,3 +61,26 @@ export const getEventTemplate = (event) => {
     </div>
   </li>`;
 };
+
+export default class EventView {
+  constructor(tripEvent) {
+    this._element = null;
+    this._event = tripEvent;
+  }
+
+  get element() {
+    if (!this._element) {
+      this._element = createElement(this.template);
+    }
+
+    return this._element;
+  }
+
+  get template() {
+    return getEventTemplate(this._event);
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
