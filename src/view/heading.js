@@ -1,6 +1,6 @@
 import AbstractView from './abstract';
 
-export default class HiddenHeadingView extends AbstractView {
+export default class HeadingView extends AbstractView {
   constructor(text) {
     super();
     this._text = text;
