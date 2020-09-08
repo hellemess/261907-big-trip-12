@@ -1,4 +1,4 @@
-import {createElement} from '../utils';
+import AbstractView from './abstract';
 
 const getDayTemplate = (day) => {
   const [, month, date, year] = day.split(` `);
@@ -12,25 +12,13 @@ const getDayTemplate = (day) => {
   </li>`;
 };
 
-export default class DayView {
+export default class DayView extends AbstractView {
   constructor(day) {
+    super();
     this._day = day;
-    this._element = null;
-  }
-
-  get element() {
-    if (!this._element) {
-      this._element = createElement(this.template);
-    }
-
-    return this._element;
   }
 
   get template() {
     return getDayTemplate(this._day);
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
