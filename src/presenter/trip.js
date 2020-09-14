@@ -9,26 +9,44 @@ import {KeyCodes} from '../utils/common';
 import NoEventsView from '../view/no-events';
 import RouteView from '../view/route';
 import SortingView from '../view/sorting';
+import {SortTypes} from '../const';
+import {sortPrice, sortTime} from '../utils/trip';
 
 export default class TripPresenter {
   constructor(header, container) {
     this._header = header;
     this._container = container;
     this._info = new InfoView();
+    this._sorting = new SortingView();
     this._daysList = new ListView(`trip-days`);
+    this._currentSortType = SortTypes.DEFAULT;
+    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+  }
+
+  _clearList() {
+    this._container.innerHTML = ``;
+    this._daysList.element.innerHTML = ``;
+  }
+
+  _handleSortTypeChange(sortType) {
+    if (sortType === this._currentSortType) {
+      return;
+    }
+
+    this._sortEvents(sortType);
   }
 
   _renderCost() {
     render(this._info, new CostView(this._trip.events), RenderPosition.BEFOREEND);
   }
 
-  _renderDay(day) {
+  _renderDay(events, day) {
     const tripDay = new DayView(day);
     const eventsList = new ListView(`trip-events__list`);
 
     render(this._daysList, tripDay, RenderPosition.BEFOREEND);
     render(tripDay, eventsList, RenderPosition.BEFOREEND);
-    this._trip.days[day].forEach((tripEvent) => this._renderEvent(tripEvent, eventsList));
+    events.forEach((tripEvent) => this._renderEvent(tripEvent, eventsList));
   }
 
   _renderEvent(tripEvent, container) {
@@ -68,7 +86,12 @@ export default class TripPresenter {
   _renderList() {
     this._renderSorting();
     render(this._container, this._daysList, RenderPosition.BEFOREEND);
-    Object.keys(this._trip.days).forEach((day) => this._renderDay(day));
+
+    if (this._currentSortType === SortTypes.DEFAULT) {
+      Object.keys(this._trip.days).forEach((day) => this._renderDay(this._trip.days[day], day));
+    } else {
+      this._renderDay(this._trip.events);
+    }
   }
 
   _renderNoEvents() {
@@ -80,7 +103,8 @@ export default class TripPresenter {
   }
 
   _renderSorting() {
-    render(this._container, new SortingView(), RenderPosition.BEFOREEND);
+    render(this._container, this._sorting, RenderPosition.BEFOREEND);
+    this._sorting.sortTypeChangeHandler = this._handleSortTypeChange;
   }
 
   _renderTrip() {
@@ -92,8 +116,26 @@ export default class TripPresenter {
     }
   }
 
+  _sortEvents(sortType) {
+    switch (sortType) {
+      case SortTypes.PRICE:
+        this._trip.events.sort(sortPrice);
+        break;
+      case SortTypes.TIME:
+        this._trip.events.sort(sortTime);
+        break;
+      default:
+        this._trip.events = this._originalEvents;
+    }
+
+    this._currentSortType = sortType;
+    this._clearList();
+    this._renderList();
+  }
+
   init(trip) {
     this._trip = Object.assign({}, trip);
+    this._originalEvents = this._trip.events.slice();
     render(this._header, this._info, RenderPosition.AFTERBEGIN);
     this._renderCost();
     this._renderTrip();
